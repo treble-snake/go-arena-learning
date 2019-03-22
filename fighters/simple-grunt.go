@@ -22,7 +22,7 @@ func (grunt SimpleGrunt) String() string {
 
 func (grunt *SimpleGrunt) TakeDamage(amount uint) {
 	grunt.health -= int(amount)
-	fmt.Println(grunt.name, ":", grunt.health, "/", grunt.maxHealth)
+	fmt.Printf("%s: %d/%d\n", grunt.name, grunt.health, grunt.maxHealth)
 }
 
 func (grunt *SimpleGrunt) getStrikeTime() time.Duration {

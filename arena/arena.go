@@ -26,7 +26,7 @@ func (duel *Duel) Start() {
 	go fighter1.Fight()
 	go fighter2.Fight()
 
-	(func() {
+	func() {
 		hasWinner := func() bool {
 			return fighter1.IsDead() || fighter2.IsDead()
 		}
@@ -52,7 +52,7 @@ func (duel *Duel) Start() {
 				}
 			}
 		}
-	})()
+	}()
 
 	var winner string
 	if fighter1.IsDead() {

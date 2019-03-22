@@ -17,14 +17,14 @@ type BasicStats struct {
 	strikeTimer    *time.Timer
 }
 
-func (grunt *BasicStats) AwaitStrikes() <-chan uint {
-	return grunt.strikesChannel
+func (stats *BasicStats) AwaitStrikes() <-chan uint {
+	return stats.strikesChannel
 }
 
-func (grunt *BasicStats) GetName() string {
-	return grunt.name
+func (stats *BasicStats) GetName() string {
+	return stats.name
 }
 
-func (grunt *BasicStats) IsDead() bool {
-	return grunt.health <= 0
+func (stats *BasicStats) IsDead() bool {
+	return stats.health <= 0
 }
