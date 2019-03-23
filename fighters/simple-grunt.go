@@ -12,7 +12,7 @@ func getMaxHealth(vitality uint) uint {
 
 // SimpleGrunt has one simple weapon and no armor
 type SimpleGrunt struct {
-	BasicStats
+	WarriorBasics
 }
 
 func (grunt SimpleGrunt) String() string {
@@ -63,7 +63,7 @@ func (grunt *SimpleGrunt) StandDown() {
 func NewSimpleGrunt(name string, strength uint, agility uint, vitality uint) *SimpleGrunt {
 	maxHealth := getMaxHealth(vitality)
 	return &SimpleGrunt{
-		BasicStats{
+		WarriorBasics{
 			name,
 			strength,
 			agility,

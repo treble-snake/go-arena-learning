@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-// BasicStats incapsulates every warrior basic attributes
-type BasicStats struct {
+// WarriorBasics incapsulates every warrior basic attributes
+type WarriorBasics struct {
 	// must be unieuq inside arena
 	name           string
 	strength       uint
@@ -18,26 +18,26 @@ type BasicStats struct {
 	strikeTimer    *time.Timer
 }
 
-func (stats *BasicStats) AwaitStrikes() <-chan uint {
-	return stats.strikesChannel
+func (warrior *WarriorBasics) AwaitStrikes() <-chan uint {
+	return warrior.strikesChannel
 }
 
-func (stats *BasicStats) GetName() string {
-	return stats.name
+func (warrior *WarriorBasics) GetName() string {
+	return warrior.name
 }
 
-func (stats *BasicStats) GetAgility() uint {
-	return stats.agility
+func (warrior *WarriorBasics) GetAgility() uint {
+	return warrior.agility
 }
 
-func (stats *BasicStats) IsDead() bool {
-	return stats.health <= 0
+func (warrior *WarriorBasics) IsDead() bool {
+	return warrior.health <= 0
 }
 
-func (stats *BasicStats) IsFasterThan(other Fighter) bool {
+func (warrior *WarriorBasics) IsFasterThan(other Fighter) bool {
 	otherAgility := other.GetAgility()
-	if stats.agility == otherAgility {
+	if warrior.agility == otherAgility {
 		return rand.Intn(2) > 0
 	}
-	return stats.agility > otherAgility
+	return warrior.agility > otherAgility
 }

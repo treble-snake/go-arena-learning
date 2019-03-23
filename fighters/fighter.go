@@ -17,11 +17,10 @@ type Fighter interface {
 	AwaitStrikes() <-chan uint
 
 	GetName() string
+	GetAgility() uint
 
 	// IsDead shows if the fighter is defeated.
 	IsDead() bool
-
-	GetAgility() uint
 
 	IsFasterThan(other Fighter) bool
 }

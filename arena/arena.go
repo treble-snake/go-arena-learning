@@ -42,7 +42,7 @@ func (duel *Duel) Start() {
 	processDamage :=
 		func(dealer fighters.Fighter, receiver fighters.Fighter, amount uint) bool {
 			fmt.Printf(
-				"%s deals %d damage to %s", dealer.GetName(), amount, receiver.GetName())
+				"%s deals %d damage to %s\n", dealer.GetName(), amount, receiver.GetName())
 			receiver.TakeDamage(amount)
 			return hasWinner()
 		}
@@ -62,15 +62,22 @@ func (duel *Duel) Start() {
 		}
 	}()
 
-	var winner string
-	if fighter1.IsDead() {
-		fighter2.StandDown()
-		winner = fighter2.GetName()
-	} else {
+	determineWinner := func() string {
+		firstFighterDead := fighter1.IsDead()
+		if firstFighterDead && fighter2.IsDead() {
+			return "Draw" // todo: is it possible?
+		}
+
+		if firstFighterDead {
+			fighter2.StandDown()
+			return fighter2.GetName()
+		}
+
 		fighter1.StandDown()
-		winner = fighter1.GetName()
+		return fighter1.GetName()
 	}
-	duel.endingChannel <- winner
+
+	duel.endingChannel <- determineWinner()
 }
 
 // AwaitEnding return channel in which winner's name will be sent
