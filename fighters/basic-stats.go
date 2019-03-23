@@ -1,6 +1,7 @@
 package fighters
 
 import (
+	"math/rand"
 	"time"
 )
 
@@ -25,6 +26,18 @@ func (stats *BasicStats) GetName() string {
 	return stats.name
 }
 
+func (stats *BasicStats) GetAgility() uint {
+	return stats.agility
+}
+
 func (stats *BasicStats) IsDead() bool {
 	return stats.health <= 0
+}
+
+func (stats *BasicStats) IsFasterThan(other Fighter) bool {
+	otherAgility := other.GetAgility()
+	if stats.agility == otherAgility {
+		return rand.Intn(2) > 0
+	}
+	return stats.agility > otherAgility
 }

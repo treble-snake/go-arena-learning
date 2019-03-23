@@ -15,31 +15,39 @@ type Duel struct {
 
 // Announce prints out duel description
 func (duel *Duel) Announce() {
-	fmt.Println(duel.fighter1, "\nversus\n", duel.fighter2, "\n")
+	fmt.Printf("%s\n\nversus\n\n%s\n\n", duel.fighter1, duel.fighter2)
 }
 
 // Start starts the fights
 func (duel *Duel) Start() {
 	fighter1, fighter2 := duel.fighter1, duel.fighter2
 
-	// todo: fighter with highest agility starts the fight (or random)
-	go fighter1.Fight()
-	go fighter2.Fight()
+	startFight := func(first fighters.Fighter, second fighters.Fighter) {
+		fmt.Printf("%s has the first move\n", first.GetName())
+		go first.Fight()
+		go second.Fight()
+	}
 
-	func() {
-		hasWinner := func() bool {
-			return fighter1.IsDead() || fighter2.IsDead()
-		}
+	if fighter1.IsFasterThan(fighter2) {
+		startFight(fighter1, fighter2)
+	} else {
+		startFight(fighter2, fighter1)
+	}
 
-		// returns true if the fight is over
-		processDamage := func(
-			dealer fighters.Fighter, receiver fighters.Fighter, amount uint) bool {
-			fmt.Println(
-				dealer.GetName(), "deals", amount, "damage to", receiver.GetName())
+	hasWinner := func() bool {
+		return fighter1.IsDead() || fighter2.IsDead()
+	}
+
+	// returns true if the fight is over
+	processDamage :=
+		func(dealer fighters.Fighter, receiver fighters.Fighter, amount uint) bool {
+			fmt.Printf(
+				"%s deals %d damage to %s", dealer.GetName(), amount, receiver.GetName())
 			receiver.TakeDamage(amount)
 			return hasWinner()
 		}
 
+	func() {
 		for {
 			select {
 			case dmg := <-fighter1.AwaitStrikes():
