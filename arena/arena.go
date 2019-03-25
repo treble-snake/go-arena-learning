@@ -38,29 +38,21 @@ func (duel *Duel) Start() {
 		return fighter1.IsDead() || fighter2.IsDead()
 	}
 
-	// returns true if the fight is over
 	processDamage :=
-		func(dealer fighters.Fighter, receiver fighters.Fighter, amount uint) bool {
+		func(dealer fighters.Fighter, receiver fighters.Fighter, amount uint) {
 			fmt.Printf(
 				"%s deals %d damage to %s\n", dealer.GetName(), amount, receiver.GetName())
 			receiver.TakeDamage(amount)
-			return hasWinner()
 		}
 
-	func() {
-		for {
-			select {
-			case dmg := <-fighter1.AwaitStrikes():
-				if processDamage(fighter1, fighter2, dmg) {
-					return
-				}
-			case dmg := <-fighter2.AwaitStrikes():
-				if processDamage(fighter2, fighter1, dmg) {
-					return
-				}
-			}
+	for !hasWinner() {
+		select {
+		case dmg := <-fighter1.AwaitStrikes():
+			processDamage(fighter1, fighter2, dmg)
+		case dmg := <-fighter2.AwaitStrikes():
+			processDamage(fighter2, fighter1, dmg)
 		}
-	}()
+	}
 
 	determineWinner := func() string {
 		firstFighterDead := fighter1.IsDead()
